@@ -7,9 +7,30 @@ type Props = {
   title: string;
   description?: string;
   script?: string;
+  noindex?: boolean;
 };
 
-const { title, description, script } = Astro.props;
+const {
+  title,
+  description = "Find and seed vanilla Team Fortress 2 servers running the classic Quickplay ruleset.",
+  script,
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const socialImageUrl = new URL("/images/vftf/logo.png", Astro.site);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  url: canonicalUrl,
+  description,
+  isPartOf: {
+    "@type": "WebSite",
+    name: "Vanilla Fortress",
+    url: Astro.site,
+  },
+};
 ---
 
 <!DOCTYPE html>
@@ -22,15 +43,38 @@ const { title, description, script } = Astro.props;
 
     <title>{title}</title>
 
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#292927" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vanilla Fortress" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content="Vanilla Fortress logo" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content="Vanilla Fortress logo" />
+
     <link
       rel="icon"
       type="image/x-icon"
       href="/images/favicon.ico"
     />
 
-    {description && (
-      <meta name="description" content={description} />
-    )}
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
 
     {script && (
       <script src={script}></script>
