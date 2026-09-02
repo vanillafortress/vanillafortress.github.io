@@ -560,6 +560,7 @@ async function askSlug(usedSlugs: Set<string>): Promise<string> {
 
     if (usedSlugs.has(slug)) {
       console.log(color.error("That server slug already exists. Every slug has to be unique!"));
+      continue
     }
 
     usedSlugs.add(slug);
