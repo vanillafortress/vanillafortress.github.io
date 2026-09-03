@@ -11,7 +11,7 @@ export default {
       name: "Agartha.tf",
       slug: "agartha",
       region: "na",
-      ip: "agartha.gamergod.net:22133",
+      ip: "170.23.51.137:22133",
       country: "us",
     },
   ],

@@ -25,7 +25,12 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
 
 <script define:vars={{ servers }} is:inline>
   const server_param = new URLSearchParams(window.location.search).get("server");
-  const server = servers.find((server) => server.slug === server_param);
+  const server = servers.find((server) => server.slug === server_param || server.ip === server_param);
+    /* as Tored said in the Discord,
+     * "mayhaps also have a version of the connect link that accepts a raw IP to connect to
+     * that way it's a universal mechanism"
+     */
+
 
   if (server) {
     const link = `steam://connect/${server.ip}`;
