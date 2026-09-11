@@ -18,22 +18,25 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
   <p class="page-lead" id="fallback">
     If the redirect doesn't work, click this button:
   </p>
-  <div class="links">
+  <div class="links" id="links">
     <a id="connect" href="/">Connect</a>
+    <button id="command">Copy Connect Command</button>
   </div>
 </section>
 
 <script define:vars={{ servers }} is:inline>
   const server_param = new URLSearchParams(window.location.search).get("server");
-  const server = servers.find((server) => server.slug === server_param || server.ip === server_param);
+  const server = servers.find(
+    (server) => server.slug === server_param || server.ip === server_param
+  );
     /* as Tored said in the Discord,
      * "mayhaps also have a version of the connect link that accepts a raw IP to connect to
      * that way it's a universal mechanism"
      */
 
-
   if (server) {
     const link = `steam://connect/${server.ip}`;
+    const command = `connect ${server.ip}`;
 
     document.title = `Connect to ${server.name}`;
 
@@ -43,6 +46,24 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
     document.querySelector("#connect").href = link;
     document.querySelector("#connect").textContent =
       `Connect to ${server.name}`;
+
+    const button = document.querySelector("#command");
+
+    if (button instanceof HTMLButtonElement) {
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(command);
+
+          button.textContent = "Copied!";
+
+          window.setTimeout(() => {
+            button.textContent = "Copy Connect Command";
+          }, 1000);
+        } catch (error) {
+          console.error("Could not copy connect command", error);
+        }
+      });
+    }
 
     window.location.href = link;
   } else {
@@ -55,6 +76,7 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
       = "The server you're trying to connect to doesn't exist.";
 
     document.querySelector("#fallback").remove();
+    document.querySelector("#command").remove();
 
     const link = document.querySelector("#connect");
     link.href = "/";
