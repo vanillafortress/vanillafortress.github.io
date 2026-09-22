@@ -1,0 +1,18 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { serverDefinitions } from "../../data/servers";
+import Connect from "../connect.astro";
+
+export const getStaticPaths = (() =>
+  serverDefinitions.flatMap((community) =>
+    community.servers.map((server) => ({
+      params: { server: server.slug },
+      props: { server, communityName: community.name },
+    })),
+  )) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { server, communityName } = Astro.props;
+---
+
+<Connect server={server} communityName={communityName} />

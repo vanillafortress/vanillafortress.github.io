@@ -1,13 +1,26 @@
 ---
-import { serverDefinitions } from "../data/servers";
+import { serverDefinitions, type ServerDefinition } from "../data/servers";
 import Layout from "../layouts/default.astro";
 
+type Props = { server?: ServerDefinition; communityName?: string };
+const { server: selectedServer, communityName } = Astro.props;
 const servers = serverDefinitions.flatMap((community) => community.servers);
+const countryCode = selectedServer?.country.toUpperCase();
+const countryName = countryCode
+  ? new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode)
+  : undefined;
+const countryFlag = countryCode
+  ? String.fromCodePoint(...[...countryCode].map((letter) => 0x1f1e6 + letter.charCodeAt(0) - 65))
+  : "";
+const connectUrl = selectedServer
+  ? new URL(`/connect/${selectedServer.slug}/`, Astro.site).href
+  : undefined;
 ---
 
 <Layout
-  title="Connect"
-  description="Easy Connect!"
+  title={selectedServer ? `Connect to ${communityName ?? selectedServer.name}` : "Connect"}
+  description={selectedServer ? `**Location:** ${countryFlag} ${countryName}\n**Game:** ${selectedServer.is_tf2c ? "TF2 Classic" : "Vanilla TF2"}` : "Easy Connect!"}
+  connectUrl={connectUrl}
   noindex>
 
 <section class="page-intro">
@@ -24,7 +37,7 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
   </div>
 </section>
 
-<script define:vars={{ servers }} is:inline>
+<script define:vars={{ servers, selectedServer }} is:inline>
   console.log("Connect script loaded");
 
   async function find_server_by_ip(ip) {
@@ -55,7 +68,7 @@ const servers = serverDefinitions.flatMap((community) => community.servers);
     // Astro wasn't playing nice with top-level awaits in an inline script,
     // so we have to do this. yay.
     console.log("Fetching server_param");
-    const server_param = new URLSearchParams(window.location.search).get("server");
+    const server_param = selectedServer?.slug ?? new URLSearchParams(window.location.search).get("server");
 
     console.log("Fetching server");
     let server = servers.find(
