@@ -1,13 +1,13 @@
 ---
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import type { Server } from "../data/servers";
+import type { ServerDefinition } from "../data/servers";
 import arrowUpIcon from "lucide-static/icons/arrow-up.svg?url";
 import connectIcon from "lucide-static/icons/arrow-right.svg?url";
 import copyIcon from "lucide-static/icons/copy.svg?url";
 
 type Props = {
-  server: Server;
+  server: ServerDefinition;
   group: string;
   regionLabel: string;
 };

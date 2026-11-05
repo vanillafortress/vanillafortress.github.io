@@ -1,13 +1,16 @@
 import type { CommunityDefinition } from "../core/types";
 
 export default {
-  name: "Winterworks Casual",
+  name: "The Cozy Spot",
+  links: {
+    discord: "https://discord.gg/t8gNHs55tU",
+  },
   servers: [
     {
-      name: "Winterworks (US Central)",
-      slug: "winterworks-casual",
+      name: "The Cozy Spot",
+      slug: "the-cozy-spot",
       region: "na",
-      ip: "170.23.69.203:22655",
+      ip: "150.136.226.38:27015",
       country: "us",
     },
   ],

@@ -1,16 +1,16 @@
 import type { CommunityDefinition } from "../core/types";
 
 export default {
-  name: "Teepawtz.tf",
+  name: "Sunny's Garden",
   links: {
-    steam: "https://steamcommunity.com/groups/Teepawt",
+    website: "https://madterminal.org/server.html",
   },
   servers: [
     {
-      name: "Teepawtz.tf",
-      slug: "teepawtz",
+      name: "Sunny's Garden",
+      slug: "sunnys-garden",
       region: "na",
-      ip: "teapot.ggwp.cc:22189",
+      ip: "server.madterminal.org:27015",
       country: "us",
     },
   ],
