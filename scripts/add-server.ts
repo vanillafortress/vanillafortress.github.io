@@ -16,7 +16,7 @@ import type {
   CommunityDefinition,
   RegionKey,
   ServerLinks,
-  Server,
+  ServerDefinition,
 } from "../src/data/servers/core/types";
 
 // TYPES
@@ -35,7 +35,7 @@ type CommunityChoice =
       links?: ServerLinks;
     };
 
-type ServerDraft = Server;
+type ServerDraft = ServerDefinition;
 
 type CommunitySource = CommunityDefinition & {
   filePath: string;
@@ -185,12 +185,11 @@ function renderCommunityGrid(communities: readonly CommunitySource[]) {
 function renderServer(server: ServerDraft, indent = "    ") {
   return [
     `${indent}{`,
-    `${indent}  name: ${server.name},`,
-    `${indent}  slug: ${server.slug},`,
-    `${indent}  region: ${server.region},`,
-    `${indent}  ip: ${server.ip},`,
-    `${indent}  country: ${server.country},`,
-    `${indent}  is_tf2c: ${server.is_tf2c},`,
+    `${indent}  name: "${server.name}",`,
+    `${indent}  slug: "${server.slug}",`,
+    `${indent}  region: "${server.region}",`,
+    `${indent}  ip: "${server.ip}",`,
+    `${indent}  country: "${server.country}",`,
     `${indent}},`
   ].join('\n');
 }
@@ -513,8 +512,6 @@ async function askServer(usedIps: Set<string>, usedSlugs: Set<string>): Promise<
       continue;
     }
 
-    const is_tf2c = await askTF2C();
-
     usedIps.add(ip);
 
     return {
@@ -523,7 +520,6 @@ async function askServer(usedIps: Set<string>, usedSlugs: Set<string>): Promise<
       region,
       ip,
       country,
-      is_tf2c
     };
   }
 }
@@ -538,10 +534,6 @@ async function askServers(usedIps: Set<string>, usedSlugs: Set<string>) {
       return servers;
     }
   }
-}
-
-async function askTF2C(): Promise<boolean> {
-  return (await askYesNo("Is this server for TF2 Classified?", false))
 }
 
 async function askSlug(usedSlugs: Set<string>): Promise<string> {
