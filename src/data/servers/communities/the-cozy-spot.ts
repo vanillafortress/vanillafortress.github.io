@@ -10,7 +10,7 @@ export default {
       name: "The Cozy Spot",
       slug: "the-cozy-spot",
       region: "na",
-      ip: "150.136.226.38:27015",
+      ip: "135.148.218.184:27015",
       country: "us",
     },
   ],
