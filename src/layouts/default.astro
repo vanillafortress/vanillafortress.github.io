@@ -3,21 +3,55 @@ import "../styles/style.scss";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
 import socialLogo from "../assets/vftf/logo.png";
+import socials from "../data/socials.yaml";
 
 type Props = {
   title: string;
   description?: string;
   noindex?: boolean;
+  connectUrl?: string;
 };
 
 const {
   title,
   description = "Search for vanilla Team Fortress 2 servers running the classic Quickplay ruleset.",
   noindex = false,
+  connectUrl,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = new URL(socialLogo.src, Astro.site);
+const discordEmbed = {
+  component: {
+    type: 17,
+    accent_color: 0xf5722c,
+    components: [
+      {
+        type: 9,
+        components: [
+          { type: 10, content: `# ${title}\n${description}` },
+        ],
+        accessory: {
+          type: 11,
+          media: { url: socialImageUrl.href },
+        },
+      },
+      {
+        type: 1,
+        components: connectUrl
+          ? [
+              { type: 2, style: 5, label: "Connect", emoji: { name: "🌐" }, url: connectUrl },
+              { type: 2, style: 5, label: "Discord", emoji: { name: "💬" }, url: socials.discord },
+            ]
+          : [
+              { type: 2, style: 5, label: "Discord", emoji: { name: "💬" }, url: socials.discord },
+              { type: 2, style: 5, label: "Steam Group", emoji: { name: "🎮" }, url: socials.steam },
+            ],
+      },
+      { type: 10, content: "-# Vanilla Fortress" },
+    ],
+  },
+};
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -67,6 +101,13 @@ const structuredData = {
       rel="icon"
       type="image/x-icon"
       href="/images/favicon.ico"
+    />
+
+    <script
+      is:inline
+      id="discord:component-embed"
+      type="application/json"
+      set:html={JSON.stringify(discordEmbed).replace(/</g, "\\u003c")}
     />
 
     <script

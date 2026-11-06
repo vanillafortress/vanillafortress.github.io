@@ -21,7 +21,7 @@ const queryHost = isIP(serverHost)
   : await lookup(serverHost, { family: 4 }).then(({ address }) => address).catch(() => serverHost);
 const queryAddress = `${queryHost}:${serverPort}`;
 const connectUrl = `steam://connect/${server.ip}`;
-const connectPage = `/connect?server=${server.slug}`;
+const connectPage = `/connect/${server.slug}/`;
 const country = server.country?.toLowerCase();
 const flagStyle = country
   ? `background-image: url("https://flagcdn.com/${country}.svg")`
