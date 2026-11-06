@@ -19,7 +19,7 @@ const connectUrl = selectedServer
 
 <Layout
   title={selectedServer ? `Connect to ${communityName ?? selectedServer.name}` : "Connect"}
-  description={selectedServer ? `**Location:** ${countryFlag} ${countryName}\n**Game:** ${selectedServer.is_tf2c ? "TF2 Classic" : "Vanilla TF2"}` : "Easy Connect!"}
+  description={selectedServer ? `**Location:** ${countryFlag} ${countryName}\n` : "Easy Connect!"}
   connectUrl={connectUrl}
   noindex>
 
