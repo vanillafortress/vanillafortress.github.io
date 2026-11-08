@@ -499,7 +499,7 @@ async function askServer(usedIps: Set<string>, usedSlugs: Set<string>): Promise<
       continue;
     }
 
-    const slug = await askSlug(usedSlugs);
+    const slug = await askSlug(usedSlugs, name);
 
     if (usedIps.has(ip)) {
       console.log(color.error("That server address already exists in the directory."));
@@ -536,9 +536,13 @@ async function askServers(usedIps: Set<string>, usedSlugs: Set<string>) {
   }
 }
 
-async function askSlug(usedSlugs: Set<string>): Promise<string> {
+async function askSlug(usedSlugs: Set<string>, server_name: string): Promise<string> {
   while (true) {
-    const slug = (await ask("Server slug: ")).trim().toLowerCase();
+    let slug = (await ask("Server slug (Leave blank for auto): ")).trim().toLowerCase();
+
+    if (!slug) {
+      slug = slugify(server_name)
+    }
 
     if (!isValidSlug(slug)) {
       console.log(

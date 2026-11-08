@@ -25,7 +25,6 @@ export type CommunityDefinition = {
   servers: ServerDefinition[];
 };
 
-
 export type ServerGroup = {
   name: string;
   links?: ServerLinks;
