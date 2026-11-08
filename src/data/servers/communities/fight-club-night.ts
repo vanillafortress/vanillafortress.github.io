@@ -10,7 +10,7 @@ export default {
       name: "Fight Club Night",
       slug: "fight-club",
       region: "na",
-      ip: "204.12.240.189:27015",
+      ip: "74.91.120.8:27015",
       country: "us",
     },
   ],
